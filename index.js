@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors());
 
-app.get("/api", (req, res) => res.json({ status: "working" }));
+app.get("/", (req, res) => res.json({ status: "working" }));
 
 const categories = [
     { value: "Animals", text: "Животные" },
@@ -172,6 +172,8 @@ async function getWord(ctx) {
 
 bot.start();
 app.listen(PORT, () => console.log("Server launch"));
+
+module.exports = app;
 
 // {
 //     message_id: 35,
