@@ -42,7 +42,7 @@ let text = `
 <a href="https://fonwall.ru/search/?order=new&q=игры">👇Источник👇</a>
 `;
 
-bot.command("/stop", async (ctx) => {
+bot.command("stop", async (ctx) => {
     isStopped = true;
     await ctx.reply("Игра остановлена");
 });
