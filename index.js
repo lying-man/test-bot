@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const bot = new Bot(process.env.BOT_TOKEN);
 const tgApi = "https://api.telegram.org/"; //POST
+let isStopped = false;
 
 const PORT = process.env.PORT || 4000;
 
@@ -41,6 +42,11 @@ let text = `
 <a href="https://fonwall.ru/search/?order=new&q=игры">👇Источник👇</a>
 `;
 
+bot.command("/stop", async (ctx) => {
+    isStopped = true;
+    await ctx.reply("Игра остановлена");
+});
+
 bot.command("speak", async (ctx) => {
     try {
         let req = `${tgApi}bot${process.env.BOT_TOKEN}/sendMessage?chat_id=-4098814280&text=${text}&parse_mode=HTML`
@@ -59,6 +65,7 @@ bot.command("speak", async (ctx) => {
 });
 
 bot.command("start", async (ctx) => {
+    isStopped = false;
     await ctx.reply('Привет, ты можешь испытать игру, для этого напиши комманду "/game"');
 });
 
@@ -110,6 +117,10 @@ bot.hears(categories.map(el => el.text), async (ctx) => {
 
 //handle answer and send request on new random word
 bot.on("msg", async (ctx) => {
+
+    if (isStopped) {
+        return;
+    }
 
     const { id, first_name } = ctx.message.from;
     const reqUser = players.find(el => el.id === id);
